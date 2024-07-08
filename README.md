@@ -20,27 +20,30 @@ I have been coding since I was 12 and I do not intend to stop anytime soon.</str
 
 <br>
 
-###  <img src="https://media.giphy.com/media/ln7z2eWriiQAllfVcn/giphy.gif" height="20"> **aboutMe.js**
+### **aboutMe.js**
 
 ```javascript
 const rajatasusual = {
   education: "MBA from IE Business School, Spain","Computer Science engineer",
   otherAlias: "Technology Consultant",
-  codesIn: [, "Node.js", "Java", "C++", "HTML", "JS", "CSS", "Angular"],
-  currentlylearning: ["Nest.js", "GraphQL","AWS"],
-  toolsUsing: ["Jest", "AJV", "APIs", "npm", "Sass", "AWS", "Wordpress", "Bootstrap", "Firebase", "Figma"],
+  codesIn: [, "Node.js", "Typescrip", "Nestjs", "Java", "C++", "HTML", "JS", "CSS", "Angular"],
+  currentlylearning: ["Langchain", "LLMs", "Nest.js", "GraphQL","AWS"],
+  toolsUsing: ["Langchainjs", "Ollama", "Redis", "Jest", "AJV", "APIs", "npm", "Sass", "AWS", "Wordpress", "Bootstrap", "Firebase", "Figma"],
 }
 ```
 
 
-## I am currently working on [ONLang](https://github.com/rajatasusual/ONLang). 
-![About ONLang](https://raw.githubusercontent.com/rajatasusual/rajatasusual/master/onlang.png). 
+## I am currently working on [Llamapp](https://github.com/rajatasusual/llamapp). 
+
+![About Llamapp](https://github.com/rajatasusual/llamapp/blob/main/assets/response.png)
+
+#### A Retrieval Augmented Generator (RAG) that operates entirely locally, combining document retrieval and language model generation to provide accurate and contextually relevant responses. Built with @langchain
 
 ## Here's what I've been up to off late.
 
 <img src="https://myreadme.vercel.app/api/embed/rajatasusual?panels=userstatistics,toprepositories,toplanguages,commitgraph" alt="reimaginedreadme" />
 
 
-<img src="https://media.giphy.com/media/RhwkGhrlj3NVSOxWSN/giphy.gif" height="30"> <em><b>I am active on the [here](https://github.com/rajatasusual)</b>. If you would want to do something cool together or have something to share, <a target="_blank" href="https://github.com/rajatasusual/rajatasusual/issues/new/choose"><strong> create an issue</strong></a>, Let's get nerdy!</b> </em>
+<em><b>I am active on the [here](https://github.com/rajatasusual)</b>. If you would want to do something cool together or have something to share, <a target="_blank" href="https://github.com/rajatasusual/rajatasusual/issues/new/choose"><strong> create an issue</strong></a>, Let's get nerdy!</b> </em>
 
 <p align="left"><a href="https://github.com/rajatasusual">With love, from rajatasusual</a></p>
