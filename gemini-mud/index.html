@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Game</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ajv/8.17.1/ajv7.min.js"
+    integrity="sha512-OIkF2zyWS+sUanhT2i75RexNDQ2EKHayyeOxBx4Z4ct0D+dlPzZPhHTi7xZ5eU7aznNLMX7pCZyZVSi25+EGMQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"
+    integrity="sha512-vc58qvvBdrDR4etbxMdlTt4GBQk1qjvyORR2nrsPsFPyrs+/u5c3+1Ct6upOgdZoIl7eq6k3a1UPDSNAQi/32A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="band.min.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "@google/generative-ai": "https://esm.run/@google/generative-ai"
+      }
+    }
+  </script>
+  <script type="module">
+    import { GoogleGenerativeAI } from "@google/generative-ai";
+    window.GoogleGenerativeAI = GoogleGenerativeAI;
+    window.Ajv = window.ajv7;
+
+    window.MAP_SIZE = 5;
+    window.LOG = false;
+    window.GENERATE = true;
+  </script>
+  <script src="graph.js"></script>
+  <script src="dist/bundle.js" defer></script>
+
+  <div id="apiKeyPopup">
+    <div class="content">
+      <img src="llama.png" alt="Llama Logo">
+      <p>Please enter your API key:</p>
+      <input type="text" id="apiKeyInput" placeholder="Your API Key">
+      <button id="saveApiKey">Save</button>
+    </div>
+  </div>
+
+  <div id="container">
+    <!-- HTML -->
+    <div id="loading-screen" class="loading-screen hidden">
+      <div class="loading-spinner">
+        <img src="llama.png" alt="Loading" class="spinner-image">
+      </div>
+    </div>
+    <div id="chat">
+      <div id="messages"></div>
+    </div>
+    <div id="scrollIndicator" class="hidden">&#9660;</div>
+    <div id="map">
+      <svg id="graph"></svg>
+    </div>
+  </div>
+  <div id="inputContainer">
+    <input type="text" id="input" placeholder="Enter command">
+    <div class="switches">
+      <input type="checkbox" class="switch" id="muteSwitch" checked>
+      <label for="muteSwitch" class="switch-label" title="music"><i class="fa-solid fa-music"></i></label>
+    </div>
+  </div>
+</body>
+
+</html>

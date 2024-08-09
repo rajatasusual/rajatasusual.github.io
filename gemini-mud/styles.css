@@ -1,0 +1,355 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Trebuchet MS', sans-serif;
+    font-size: 18px;
+    line-height: 2;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: linear-gradient(-45deg, #141E30, #598dc9);
+    color: #FFFFFF;
+    animation: gradient 15s ease infinite;
+    background-size: 400% 400%;
+    transition: background 5s ease-in-out;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+#apiKeyPopup {
+    display: none;
+    /* Initially hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+    /* Ensure it's on top of everything */
+}
+
+#apiKeyPopup .content {
+    background-color: #2C3E50;
+    border-radius: 10px;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+#apiKeyPopup img {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+#apiKeyPopup input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #34495E;
+    color: #FFF;
+}
+
+#apiKeyPopup button {
+    background-color: #3498DB;
+    color: #FFF;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* ...rest of your CSS... */
+
+#container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    /* Ensure it's on top of other content */
+    opacity: 0;
+    /* Start with hidden state */
+    pointer-events: none;
+    /* Prevent interaction when hidden */
+    transition: opacity 0.5s ease;
+    /* Transition effect */
+}
+
+.loading-screen.show {
+    opacity: 1;
+    /* Visible state */
+    pointer-events: auto;
+    /* Allow interaction when visible */
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    /* Hidden state */
+    pointer-events: none;
+    /* Prevent interaction when hidden */
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    animation: heartbeat 1.5s infinite;
+    /* Apply heartbeat animation */
+}
+
+.spinner-image {
+    width: 40px;
+    /* Adjust as needed */
+    height: 40px;
+    /* Adjust as needed */
+    position: absolute;
+    z-index: 1;
+    /* Ensure image is on top */
+}
+
+/* Heartbeat animation */
+@keyframes heartbeat {
+    0% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.1);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+
+    75% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+#chat {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    height: 40%;
+}
+
+#scrollIndicator {
+    cursor: pointer;
+    position: absolute;
+    bottom: 55%;
+    right: 10px;
+}
+
+#scrollIndicator.hidden {
+    display: none;
+}
+
+#messages {
+    flex: 1;
+    overflow-y: scroll;
+    padding: 10px;
+    border-radius: 5px;
+    transition: all 0.3s;
+    scroll-behavior: smooth;
+}
+
+.system-message {
+    color: #842029;
+    cursor: pointer;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.message {
+    animation: fadeIn 1s;
+}
+
+#map {
+    height: 60%;
+    display: flex;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+#graph {
+    width: 100%;
+    height: 100%;
+}
+
+#inputContainer {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.switches {
+    display: flex;
+}
+
+/* Hide default checkbox */
+.switch {
+    display: none;
+}
+
+/* Style checkbox container */
+.switch-label {
+    cursor: pointer;
+    width: 100%;
+    padding: 15px;
+    margin: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    background: #2C3E50;
+    color: #FFF;
+    border-radius: 5px;
+}
+
+/* Style the Font Awesome icon */
+.switch-label i {
+    color: #888;
+    /* Adjust color */
+}
+
+/* Change icon color when checkbox is checked */
+.switch:checked+.switch-label i {
+    color: #F9E358;
+    /* Adjust color */
+}
+
+#input {
+    width: 100%;
+    padding: 15px;
+    margin: 20px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    background: #2C3E50;
+    color: #FFF;
+    border-radius: 5px;
+    transition: all 0.3s;
+    animation: glowing 5s linear infinite;
+}
+
+@keyframes glowing {
+    0% {
+        border-color: #3498DB;
+        box-shadow: 0 0 5px #3498DB;
+    }
+
+    50% {
+        border-color: #F9E358;
+        box-shadow: 0 0 20px #FFF;
+    }
+
+    100% {
+        border-color: #ACE2F9;
+        box-shadow: 0 0 5px #3498DB;
+    }
+}
+
+#input:focus {
+    outline: none;
+}
+
+.hline,
+.vline {
+    stroke: #ccc;
+    stroke-width: 0.1px;
+}
+
+.legend-text {
+    fill: #FFFFFF;
+}
+
+.node {
+    fill: #3587A4;
+    stroke: #ACE2F9;
+    stroke-width: 2px;
+    cursor: pointer;
+    filter: drop-shadow(2px 2px 4px #3587A4);
+}
+
+.startNode {
+    fill: #F9E358;
+}
+
+.currentNode {
+    stroke: #F9E358;
+}
+
+.node text {
+    font: 10px sans-serif;
+    text-anchor: middle;
+    visibility: hidden;
+}
+
+.link {
+    stroke: #ACE2F9;
+    stroke-opacity: 0.6;
+    stroke-width: 2px;
+    transition: stroke-width 0.3s;
+}
+
+.link:hover {
+    stroke-width: 3px;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: #ACE2F9;
+    color: #1A2A73;
+    padding: 10px;
+    border-radius: 10px;
+    pointer-events: none;
+    display: none;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
