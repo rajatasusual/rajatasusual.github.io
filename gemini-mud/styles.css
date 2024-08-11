@@ -168,7 +168,8 @@ body {
 
 #chat {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
+    overflow: auto;
     padding: 10px;
     height: 40%;
 }
@@ -196,6 +197,10 @@ body {
 .system-message {
     color: #842029;
     cursor: pointer;
+}
+
+.general-message {
+    color: #F9E358;
 }
 
 @keyframes fadeIn {
