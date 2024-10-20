@@ -1,38 +1,14 @@
 import { initializeGrid, move, isGameOver, getScore, getGrid, getBoardSize, getPreviousGrid, getWordIndices, cleanTile, resetGame, getLastDirection } from './game.js';
 
-const colors = {
-    'A': '#FFA500', // Orange
-    'B': '#87CEEB', // Sky blue
-    'C': '#4682B4', // Steel blue
-    'D': '#4169E1', // Royal blue
-    'E': '#FF8C00', // Dark orange
-    'F': '#0000CD', // Medium blue
-    'G': '#00008B', // Dark blue
-    'H': '#000080', // Navy
-    'I': '#FF4500', // Orange red
-    'J': '#1E90FF', // Dodger blue
-    'K': '#00BFFF', // Deep sky blue
-    'L': '#00CED1', // Dark turquoise
-    'M': '#20B2AA', // Light sea green
-    'N': '#3CB371', // Medium sea green
-    'O': '#FF7F50', // Coral
-    'P': '#008000', // Green
-    'Q': '#006400', // Dark green
-    'R': '#B8860B', // Dark goldenrod
-    'S': '#FFD700', // Gold
-    'T': '#FFA500', // Orange
-    'U': '#FF6347', // Tomato
-    'V': '#FF4500', // Orange red
-    'W': '#FF0000', // Red
-    'X': '#B22222', // Firebrick
-    'Y': '#A52A2A', // Brown
-    'Z': '#8B0000', // Dark red
-};
-
 // Render the grid to the DOM
 function renderGrid(isNew) {
     // Clear the board
     const board = document.getElementById('board');
+    if (isNew) {
+        board.style.gridTemplateColumns = `repeat(${getBoardSize()}, 1fr)`;
+        board.style.gridTemplateRows = `repeat(${getBoardSize()}, 1fr)`;
+    }
+
     const grid = getGrid();
 
     board.innerHTML = ''; // Clear the board
@@ -45,8 +21,10 @@ function renderGrid(isNew) {
             // Add animation class if tile moved
             if (isNew || tileHasMoved(rIdx, cIdx)) {
                 tile.classList.add('moved');
+                tile.classList.add('merged');
                 setTimeout(() => {
                     tile.classList.remove('moved');
+                    tile.classList.remove('merged');
                 }, 300); // Remove the animation after it's played
             }
         });
@@ -70,7 +48,7 @@ function renderGrid(isNew) {
         message.style.fontWeight = 'bold';
         message.style.textAlign = 'center';
         // add a gray background the size of the grid
-        message.style.width = `${getBoardSize()}00%`;
+        message.style.width = `${board.offsetWidth}px`;
         message.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
         board.appendChild(message);
     }
@@ -115,7 +93,7 @@ function glowCells(grid) {
 
 function tileHasMoved(rIdx, cIdx) {
     const previousGrid = getPreviousGrid();
-    return previousGrid[rIdx][cIdx] !== getGrid()[rIdx][cIdx];
+    return previousGrid.length && previousGrid[rIdx][cIdx] !== getGrid()[rIdx][cIdx];
 }
 
 // Create a tile element
@@ -218,10 +196,26 @@ board.addEventListener('touchstart', handleTouchStart, false);
 board.addEventListener('touchmove', handleTouchMove, false);
 board.addEventListener('touchend', handleTouchEnd, false);
 
-const resetGameButton = document.getElementById('reset-game');
-resetGameButton.addEventListener('click', () => {
+document.getElementById('reset-game').addEventListener('click', function() {
+    // Show confirmation box
+    document.getElementById('confirmation-box').classList.remove('hidden');
+    // Hide reset button
+    this.classList.add('hidden');
+});
+
+document.getElementById('cancel-reset').addEventListener('click', function() {
+    // Hide confirmation box and show reset button
+    document.getElementById('confirmation-box').classList.add('hidden');
+    document.getElementById('reset-game').classList.remove('hidden');
+});
+
+document.getElementById('confirm-reset').addEventListener('click', function() {
     resetGame();
     renderGrid(true);
+
+    // Hide confirmation box and show reset button again
+    document.getElementById('confirmation-box').classList.add('hidden');
+    document.getElementById('reset-game').classList.remove('hidden');
 });
 
 // Initialize the game on page load
