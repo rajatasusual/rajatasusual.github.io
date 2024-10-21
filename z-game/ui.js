@@ -33,24 +33,10 @@ function renderGrid(isNew) {
     !isNew && glowCells(grid);
 
     updateScoreDisplay();
+    updateTimerDisplay();
 
     if (isGameOver()) {
-        //show game over message
-        const message = document.createElement('div');
-        message.textContent = 'Game Over';
-        message.id = 'game-over';
-        message.style.position = 'absolute';
-        message.style.top = '50%';
-        message.style.left = '50%';
-        message.style.transform = 'translate(-50%, -50%)';
-        message.style.fontSize = '2rem';
-        message.style.color = 'white';
-        message.style.fontWeight = 'bold';
-        message.style.textAlign = 'center';
-        // add a gray background the size of the grid
-        message.style.width = `${board.offsetWidth}px`;
-        message.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-        board.appendChild(message);
+        showGameOver();
     }
 
     setTimeout(() => {
@@ -71,6 +57,38 @@ function renderGrid(isNew) {
 
         setTimeout(renderGrid, 500);
     }, 500);
+}
+
+function startTimer() {
+    timer = setInterval(() => {
+        if (timeRemaining > 0) {
+            timeRemaining--;
+            localStorage.setItem('time', timeRemaining);
+            updateTimerDisplay(); // Update the timer display
+        } else {
+            clearInterval(timer);
+            showGameOver();
+        }
+    }, 1000); // Countdown every second
+}
+
+function showGameOver() {
+    //show game over message
+    const message = document.createElement('div');
+    message.textContent = 'Game Over';
+    message.id = 'game-over';
+    message.style.position = 'absolute';
+    message.style.top = '50%';
+    message.style.left = '50%';
+    message.style.transform = 'translate(-50%, -50%)';
+    message.style.fontSize = '2rem';
+    message.style.color = 'white';
+    message.style.fontWeight = 'bold';
+    message.style.textAlign = 'center';
+    // add a gray background the size of the grid
+    message.style.width = `${board.offsetWidth}px`;
+    message.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+    board.appendChild(message);
 }
 
 function glowCells(grid) {
@@ -131,6 +149,11 @@ function updateScoreDisplay() {
     document.getElementById('score').textContent = `Score: ${getScore()}`;
 }
 
+function updateTimerDisplay() {
+    const timerElement = document.getElementById('timer');
+    timerElement.textContent = `Time: ${timeRemaining}s`;
+}
+
 // Handle key presses
 function handleKeyPress(event) {
     const directionMap = {
@@ -162,32 +185,45 @@ function handleTouchStart(event) {
 
 // Function to handle touch move event and prevent default scrolling
 function handleTouchMove(event) {
-    event.preventDefault(); // Prevent the page from scrolling
-    endX = event.touches[0].clientX;
-    endY = event.touches[0].clientY;
+    event.preventDefault();
 }
 
 // Function to handle the touch end event and determine swipe direction
-function handleTouchEnd() {
+function handleTouchEnd(event) {
+    endX = event.changedTouches[0].clientX;
+    endY = event.changedTouches[0].clientY;
+
     const deltaX = endX - startX;
     const deltaY = endY - startY;
 
-    // Check if the swipe distance is greater than the threshold to be considered a valid swipe
-    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > threshold) {
-        // Horizontal swipe
-        if (deltaX > 0) {
-            move('right'); // Swipe right
+    // Calculate absolute distances
+    const absDeltaX = Math.abs(deltaX);
+    const absDeltaY = Math.abs(deltaY);
+
+    // Only consider swipes where the movement is greater than the threshold
+    if (absDeltaX > threshold || absDeltaY > threshold) {
+        if (absDeltaX > absDeltaY) {
+            // Horizontal swipe
+            if (deltaX > 0) {
+                move('right'); // Swipe right
+            } else {
+                move('left'); // Swipe left
+            }
         } else {
-            move('left'); // Swipe left
-        }
-    } else if (Math.abs(deltaY) > threshold) {
-        // Vertical swipe
-        if (deltaY > 0) {
-            move('down') // Swipe down
-        } else {
-            move('up'); // Swipe up
+            // Vertical swipe
+            if (deltaY > 0) {
+                move('down'); // Swipe down
+            } else {
+                move('up'); // Swipe up
+            }
         }
     }
+
+    // Reset the touch positions
+    startX = null;
+    startY = null;
+    endX = null;
+    endY = null;
 
     renderGrid();
 }
@@ -214,6 +250,7 @@ document.getElementById('cancel-reset').addEventListener('click', function () {
 document.getElementById('confirm-reset').addEventListener('click', function () {
     resetGame();
     renderGrid(true);
+    startTimer();
 
     // Hide confirmation box and show reset button again
     document.getElementById('confirmation-box').classList.add('hidden');
@@ -268,4 +305,5 @@ document.getElementById('dark-mode-toggle').addEventListener('change', function 
 window.onload = () => {
     initializeGrid();
     renderGrid(true);
+    startTimer();
 };
