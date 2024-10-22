@@ -40,7 +40,8 @@ function addRandomLetter() {
     }
 }
 
-function checkWordsAndScore(grid) {
+function checkWordsAndScore(grid, userPlayed = false) {
+    let foundWords = 0;
     let totalWordScore = 0;
 
     const minWordLength = 3;
@@ -65,11 +66,12 @@ function checkWordsAndScore(grid) {
                     }
 
                     if (verticalWord && dict.has(verticalWord) && usedWords.indexOf(verticalWord) === -1) {
+                        foundWords++;
                         totalWordScore += calculateWordScore(verticalWord);
-                        console.log(verticalWord + ' ' + calculateWordScore(verticalWord));
+                        userPlayed && console.log(verticalWord + ' ' + calculateWordScore(verticalWord));
 
                         wordIndices.push(...tempIndices); // Add valid indices
-                        usedWords.push(verticalWord); // Mark word as used
+                        userPlayed && usedWords.push(verticalWord); // Mark word as used
                     }
                 }
             }
@@ -95,18 +97,28 @@ function checkWordsAndScore(grid) {
                     }
 
                     if (horizontalWord && dict.has(horizontalWord) && usedWords.indexOf(horizontalWord) === -1) {
+                        foundWords++;
                         totalWordScore += calculateWordScore(horizontalWord);
-                        console.log(horizontalWord + ' ' + calculateWordScore(horizontalWord));
+                        userPlayed && console.log(horizontalWord + ' ' + calculateWordScore(horizontalWord));
 
                         wordIndices.push(...tempIndices); // Add valid indices
-                        usedWords.push(horizontalWord); // Mark word as used
+                        userPlayed && usedWords.push(horizontalWord); // Mark word as used
                     }
                 }
             }
         }
     }
 
-    return totalWordScore;
+    userPlayed && foundWords > 1 && console.log('Multiplier played: ' + foundWords);
+    
+    // Update the multiplier
+    multiplier = foundWords;
+
+    return totalWordScore * foundWords;
+}
+
+function updateWordScore(){
+    score += checkWordsAndScore(grid, true);
 }
 
 function calculateWordScore(word) {
@@ -228,7 +240,7 @@ function cleanTile(r, c) {
 }
 
 // Game move logic
-function move(direction) {
+function move(direction, wordDeleted = false) {
     if (isGameOver()) return;
 
     let moved = false; // Flag to track if any tiles have moved
@@ -280,17 +292,13 @@ function move(direction) {
 
     movements[direction]();
     if (moved) {
-        lastDirection = direction;
-        const wordPoints = checkWordsAndScore(grid); // Check and score formed words
-        if (wordPoints > 0) {
-            score += wordPoints;
-        } else {
-            wordIndices = []; // Reset wordIndices
+        const wordPoints = checkWordsAndScore(grid, false);
+        if(wordPoints === 0) {
+            wordIndices = [];
         }
-
         addRandomLetter();
     } else {
-        score -= 1; // Apply penalty if no tiles were moved
+        !wordDeleted && score--; // Apply penalty if no tiles were moved
     }
 
     autoSave();
@@ -322,8 +330,8 @@ function getWordIndices() {
     return wordIndices;
 }
 
-function getLastDirection() {
-    return lastDirection;
+function getMultiplier() {
+    return multiplier;
 }
 
 function resetGame() {
@@ -334,4 +342,4 @@ function resetGame() {
     usedWords = [];
 }
 
-export { initializeGrid, addRandomLetter, move, getLastDirection, cleanTile, getScore, getGrid, getBoardSize, resetGame, getPreviousGrid, getWordIndices, copyGrid, isGameOver };
+export { initializeGrid, addRandomLetter, move, cleanTile, getScore, getMultiplier,getGrid, getBoardSize, resetGame, getPreviousGrid, getWordIndices, updateWordScore, copyGrid, isGameOver };

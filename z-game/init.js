@@ -1,4 +1,4 @@
-const boardSize = 5;
+const boardSize = 6;
 const TEST = false;
 const SIMULATE_GAMEOVER = false;
 const URL = TEST ? 'http://localhost:5500' : 'https://rajatasusual.github.io/z-game';
@@ -67,7 +67,6 @@ let usedWords = [];
 let previousGrid = [];
 let wordIndices = [];
 let score = 0;
-let lastDirection = '';
 let dict = new Set();
 
 let colors = [];
@@ -75,6 +74,7 @@ let settings = {};
 
 let timeRemaining = DEFAULT_TIME; // Time in seconds
 let timer;
+let multiplier = 1;
 
 function interpolateColor(startColor, endColor, steps, step) {
     const start = parseInt(startColor.slice(1), 16);

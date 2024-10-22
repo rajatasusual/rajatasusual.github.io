@@ -1,4 +1,4 @@
-import { initializeGrid, move, isGameOver, getScore, getGrid, getBoardSize, getPreviousGrid, getWordIndices, cleanTile, resetGame, getLastDirection } from './game.js';
+import { initializeGrid, move, isGameOver, getScore, getMultiplier, getGrid, getBoardSize, getPreviousGrid, getWordIndices, cleanTile, resetGame, updateWordScore } from './game.js';
 
 // Render the grid to the DOM
 function renderGrid(isNew) {
@@ -30,7 +30,7 @@ function renderGrid(isNew) {
         });
     });
 
-    !isNew && glowCells(grid);
+    !isNew && highlightWordsAndMultiplier(grid);
 
     updateScoreDisplay();
     updateTimerDisplay();
@@ -43,7 +43,6 @@ function renderGrid(isNew) {
     const wordIndices = getWordIndices();
     wordIndices.forEach(({ r, c }) => {
         const tile = board.children[r * getBoardSize() + c];
-        tile.addEventListener('click', handleTileClick);
         tile.addEventListener('touchend', function (event) {
             const rect = event.target.getBoundingClientRect();
             const x = event.changedTouches[0].pageX - rect.left - rect.width / 2;
@@ -69,6 +68,9 @@ function executeWordDeletion() {
 
     if (!wordIndices.length) return;
 
+    updateWordScore();
+    updateScoreDisplay();
+
     // Clear the tiles
     wordIndices.forEach(({ r, c }) => {
         cleanTile(r, c);
@@ -78,8 +80,8 @@ function executeWordDeletion() {
         tile.style.backgroundColor = '#f0f0f0';
     });
 
-    // Move the tiles based on the last direction
-    move(getLastDirection());
+    // Move the tiles down
+    move("down", true);
 
     setTimeout(renderGrid, 500);
 
@@ -129,7 +131,15 @@ function showGameOver() {
     board.appendChild(message);
 }
 
-function glowCells(grid) {
+function highlightWordsAndMultiplier(grid) {
+    const multiplier = getMultiplier();
+    if (multiplier > 1) {
+        const logo = document.getElementById('score');
+        logo.classList.add('mutliplier');
+    } else {
+        const logo = document.getElementById('score');
+        logo.classList.remove('mutliplier');
+    }
     const indices = getWordIndices();
     const board = document.getElementById('board');
     const boardSize = getBoardSize();
